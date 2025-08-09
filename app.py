@@ -1,8 +1,7 @@
 from flask import Flask, request, jsonify, send_from_directory
-
-from data_store import init_db
-from events import create_event, update_event, delete_event, list_events
-from guests import manage_guest, list_guests
+from events import create_event, update_event, delete_event
+from guests import manage_guest
+from data_store import events, guests
 
 app = Flask(__name__, static_url_path='', static_folder='.')
 
@@ -14,9 +13,9 @@ def index():
 
 
 @app.route('/api/events', methods=['GET'])
-def list_events_route():
+def list_events():
     """Return all events."""
-    return jsonify(list_events())
+    return jsonify(events)
 
 
 @app.route('/api/events', methods=['POST'])
@@ -29,7 +28,7 @@ def add_event():
         data.get('time', ''),
         data.get('location', ''),
         float(data.get('price', 0)),
-        data.get('program', []),
+        data.get('program', [])
     )
     return jsonify({'id': event_id}), 201
 
@@ -39,7 +38,7 @@ def edit_event(event_id: int):
     """Update an existing event."""
     if not update_event(event_id, **request.get_json(force=True)):
         return jsonify({'error': 'not found'}), 404
-    return jsonify(list_events().get(event_id))
+    return jsonify(events[event_id])
 
 
 @app.route('/api/events/<int:event_id>', methods=['DELETE'])
@@ -51,21 +50,19 @@ def remove_event(event_id: int):
 
 
 @app.route('/api/guests', methods=['GET'])
-def list_guests_route():
+def list_guests():
     """Return all guests."""
-    return jsonify(list_guests())
+    return jsonify(guests)
 
 
 @app.route('/api/guests', methods=['POST'])
 def add_guest():
     """Add a guest."""
     data = request.get_json(force=True)
-    gid = manage_guest(
-        action='add',
-        name=data.get('name', ''),
-        email=data.get('email', ''),
-        category=data.get('category', ''),
-    )
+    gid = manage_guest(action='add',
+                       name=data.get('name', ''),
+                       email=data.get('email', ''),
+                       category=data.get('category', ''))
     return jsonify({'id': gid}), 201
 
 
@@ -82,10 +79,8 @@ def delete_guest(guest_id: int):
 @app.route('/api/analytics', methods=['GET'])
 def analytics_summary():
     """Simple analytics overview."""
-    return jsonify({'events': len(list_events()), 'guests': len(list_guests())})
+    return jsonify({'events': len(events), 'guests': len(guests)})
 
 
 if __name__ == '__main__':
-    init_db()
-    app.run(debug=True, host='0.0.0.0', port=8080)
-
+    app.run(debug=True)
