@@ -1,60 +1,35 @@
-"""Guest list management backed by PostgreSQL."""
+"""Guest list management."""
 
 import csv
 from typing import Dict
+from data_store import guests
 
-from data_store import Guest, SessionLocal
+next_guest_id = 1
 
 
 def manage_guest(guest_id: int = None, action: str = "add", **data) -> int:
     """Add, update or delete a guest."""
-    session = SessionLocal()
+    global next_guest_id
     if action == "add":
-        guest = Guest(
-            name=data.get("name"),
-            email=data.get("email"),
-            category=data.get("category"),
-        )
-        session.add(guest)
-        session.commit()
-        gid = guest.id
-        session.close()
+        gid = next_guest_id
+        next_guest_id += 1
+        guests[gid] = {"name": data.get("name"), "email": data.get("email"), "category": data.get("category")}
         return gid
-    elif action == "edit":
-        guest = session.get(Guest, guest_id)
-        if not guest:
-            session.close()
-            raise ValueError("Invalid action or guest_id")
-        guest.name = data.get("name", guest.name)
-        guest.email = data.get("email", guest.email)
-        guest.category = data.get("category", guest.category)
-        session.commit()
-        session.close()
+    elif action == "edit" and guest_id in guests:
+        guests[guest_id].update(data)
         return guest_id
-    elif action == "delete":
-        guest = session.get(Guest, guest_id)
-        if not guest:
-            session.close()
-            raise ValueError("Invalid action or guest_id")
-        session.delete(guest)
-        session.commit()
-        session.close()
+    elif action == "delete" and guest_id in guests:
+        del guests[guest_id]
         return guest_id
     else:
-        session.close()
         raise ValueError("Invalid action or guest_id")
 
 
 def categorize_guest(guest_id: int, category: str) -> bool:
     """Assign a category to a guest."""
-    session = SessionLocal()
-    guest = session.get(Guest, guest_id)
-    if not guest:
-        session.close()
+    if guest_id not in guests:
         return False
-    guest.category = category
-    session.commit()
-    session.close()
+    guests[guest_id]["category"] = category
     return True
 
 
@@ -64,23 +39,6 @@ def import_guestlist(csv_file: str) -> int:
     with open(csv_file, newline="", encoding="utf-8") as f:
         reader = csv.DictReader(f)
         for row in reader:
-            manage_guest(
-                action="add",
-                name=row.get("name"),
-                email=row.get("email"),
-                category=row.get("category"),
-            )
+            manage_guest(action="add", name=row.get("name"), email=row.get("email"), category=row.get("category"))
             count += 1
     return count
-
-
-def list_guests() -> Dict[int, Dict]:
-    """Return all guests as a mapping of id to data."""
-    session = SessionLocal()
-    result = {
-        g.id: {"name": g.name, "email": g.email, "category": g.category}
-        for g in session.query(Guest).all()
-    }
-    session.close()
-    return result
-
