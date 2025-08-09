@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Guests - Event Manager</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="nav">
+        <a href="index.html" class="nav-brand">Event Manager</a>
+        <div class="nav-links">
+            <a href="events.html">Events</a>
+            <a href="guests.html" class="active">Guests</a>
+            <a href="analytics.html">Analytics</a>
+        </div>
+    </nav>
+    <main class="container">
+        <h1>Guests</h1>
+        <form id="guest-form" class="card">
+            <div class="form-row">
+                <input type="text" id="g-name" placeholder="Name" required>
+                <input type="email" id="g-email" placeholder="Email" required>
+                <input type="text" id="g-category" placeholder="Category">
+            </div>
+            <button type="submit" class="btn">Add Guest</button>
+        </form>
+        <table id="guests-table" class="table">
+            <thead>
+                <tr>
+                    <th>Name</th><th>Email</th><th>Category</th><th></th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </main>
+    <script src="guests.js"></script>
+</body>
+</html>
