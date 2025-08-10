@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Events - Event Manager</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="nav">
+        <a href="index.html" class="nav-brand">Event Manager</a>
+        <div class="nav-links">
+            <a href="events.html" class="active">Events</a>
+            <a href="guests.html">Guests</a>
+            <a href="analytics.html">Analytics</a>
+            <a href="login.html">Login</a>
+        </div>
+    </nav>
+    <main class="container">
+        <h1>Events</h1>
+        <form id="event-form" class="card">
+            <div class="form-row">
+                <input type="text" id="name" placeholder="Event Name" required>
+                <input type="date" id="date" required>
+                <input type="time" id="time" required>
+            </div>
+            <div class="form-row">
+                <input type="text" id="location" placeholder="Location" required>
+                <input type="number" id="price" placeholder="Price" step="0.01">
+                <input type="text" id="program" placeholder="Program (comma separated)">
+            </div>
+            <button type="submit" class="btn">Create Event</button>
+        </form>
+        <table id="events-table" class="table">
+            <thead>
+                <tr>
+                    <th>Name</th><th>Date</th><th>Time</th><th>Location</th><th>Price</th><th>Program</th><th></th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </main>
+    <script src="events.js"></script>
+</body>
+</html>
