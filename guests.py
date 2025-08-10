@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 """Guest list management backed by SQLAlchemy."""
 
 import csv
@@ -14,10 +15,20 @@ def _guest_to_dict(guest: Guest) -> Dict:
         "email": guest.email,
         "category": guest.category,
     }
+=======
+"""Guest list management."""
+
+import csv
+from typing import Dict
+from data_store import guests
+
+next_guest_id = 1
+>>>>>>> main
 
 
 def manage_guest(guest_id: int = None, action: str = "add", **data) -> int:
     """Add, update or delete a guest."""
+<<<<<<< HEAD
     session: Session = SessionLocal()
     if action == "add":
         guest = Guest(name=data.get("name"), email=data.get("email"), category=data.get("category"))
@@ -50,11 +61,27 @@ def manage_guest(guest_id: int = None, action: str = "add", **data) -> int:
         return guest_id
     else:
         session.close()
+=======
+    global next_guest_id
+    if action == "add":
+        gid = next_guest_id
+        next_guest_id += 1
+        guests[gid] = {"name": data.get("name"), "email": data.get("email"), "category": data.get("category")}
+        return gid
+    elif action == "edit" and guest_id in guests:
+        guests[guest_id].update(data)
+        return guest_id
+    elif action == "delete" and guest_id in guests:
+        del guests[guest_id]
+        return guest_id
+    else:
+>>>>>>> main
         raise ValueError("Invalid action or guest_id")
 
 
 def categorize_guest(guest_id: int, category: str) -> bool:
     """Assign a category to a guest."""
+<<<<<<< HEAD
     session: Session = SessionLocal()
     guest = session.get(Guest, guest_id)
     if not guest:
@@ -63,6 +90,11 @@ def categorize_guest(guest_id: int, category: str) -> bool:
     guest.category = category
     session.commit()
     session.close()
+=======
+    if guest_id not in guests:
+        return False
+    guests[guest_id]["category"] = category
+>>>>>>> main
     return True
 
 
@@ -75,6 +107,7 @@ def import_guestlist(csv_file: str) -> int:
             manage_guest(action="add", name=row.get("name"), email=row.get("email"), category=row.get("category"))
             count += 1
     return count
+<<<<<<< HEAD
 
 
 def get_all_guests() -> List[Dict]:
@@ -83,3 +116,5 @@ def get_all_guests() -> List[Dict]:
     data = [_guest_to_dict(g) for g in session.query(Guest).all()]
     session.close()
     return data
+=======
+>>>>>>> main
