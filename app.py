@@ -1,5 +1,4 @@
 from flask import Flask, request, jsonify, send_from_directory
-<<<<<<< HEAD
 from events import create_event, update_event, delete_event, get_all_events
 from guests import manage_guest, get_all_guests
 from database import SessionLocal
@@ -11,14 +10,6 @@ app = Flask(__name__, static_url_path='', static_folder='.')
 # Ensure database tables exist on startup
 init_db()
 
-=======
-from events import create_event, update_event, delete_event
-from guests import manage_guest
-from data_store import events, guests
-
-app = Flask(__name__, static_url_path='', static_folder='.')
-
->>>>>>> main
 
 @app.route('/')
 def index():
@@ -29,11 +20,7 @@ def index():
 @app.route('/api/events', methods=['GET'])
 def list_events():
     """Return all events."""
-<<<<<<< HEAD
     return jsonify(get_all_events())
-=======
-    return jsonify(events)
->>>>>>> main
 
 
 @app.route('/api/events', methods=['POST'])
@@ -54,16 +41,10 @@ def add_event():
 @app.route('/api/events/<int:event_id>', methods=['PUT'])
 def edit_event(event_id: int):
     """Update an existing event."""
-<<<<<<< HEAD
     updated = update_event(event_id, **request.get_json(force=True))
     if not updated:
         return jsonify({'error': 'not found'}), 404
     return jsonify(updated)
-=======
-    if not update_event(event_id, **request.get_json(force=True)):
-        return jsonify({'error': 'not found'}), 404
-    return jsonify(events[event_id])
->>>>>>> main
 
 
 @app.route('/api/events/<int:event_id>', methods=['DELETE'])
@@ -77,11 +58,7 @@ def remove_event(event_id: int):
 @app.route('/api/guests', methods=['GET'])
 def list_guests():
     """Return all guests."""
-<<<<<<< HEAD
     return jsonify(get_all_guests())
-=======
-    return jsonify(guests)
->>>>>>> main
 
 
 @app.route('/api/guests', methods=['POST'])
@@ -108,15 +85,11 @@ def delete_guest(guest_id: int):
 @app.route('/api/analytics', methods=['GET'])
 def analytics_summary():
     """Simple analytics overview."""
-<<<<<<< HEAD
     session = SessionLocal()
     event_count = session.query(Event).count()
     guest_count = session.query(Guest).count()
     session.close()
     return jsonify({'events': event_count, 'guests': guest_count})
-=======
-    return jsonify({'events': len(events), 'guests': len(guests)})
->>>>>>> main
 
 
 if __name__ == '__main__':
