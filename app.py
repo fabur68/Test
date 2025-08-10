@@ -1,23 +1,14 @@
-<<<<<<< HEAD
 from flask import Flask, request, jsonify, send_from_directory, session
-=======
-from flask import Flask, request, jsonify, send_from_directory
->>>>>>> main
 from events import create_event, update_event, delete_event, get_all_events
 from guests import manage_guest, get_all_guests
 from database import SessionLocal
 from models import Event, Guest
 from db_setup import init_db
-<<<<<<< HEAD
 from auth import create_user, authenticate_user, request_password_reset, verify_two_factor
 from security import require_roles
 
 app = Flask(__name__, static_url_path='', static_folder='.')
 app.secret_key = "dev-secret"
-=======
-
-app = Flask(__name__, static_url_path='', static_folder='.')
->>>>>>> main
 
 # Ensure database tables exist on startup
 init_db()
@@ -36,10 +27,7 @@ def list_events():
 
 
 @app.route('/api/events', methods=['POST'])
-<<<<<<< HEAD
 @require_roles('admin', 'co-organizer')
-=======
->>>>>>> main
 def add_event():
     """Create an event from posted JSON."""
     data = request.get_json(force=True)
@@ -55,10 +43,7 @@ def add_event():
 
 
 @app.route('/api/events/<int:event_id>', methods=['PUT'])
-<<<<<<< HEAD
 @require_roles('admin', 'co-organizer')
-=======
->>>>>>> main
 def edit_event(event_id: int):
     """Update an existing event."""
     updated = update_event(event_id, **request.get_json(force=True))
@@ -68,10 +53,7 @@ def edit_event(event_id: int):
 
 
 @app.route('/api/events/<int:event_id>', methods=['DELETE'])
-<<<<<<< HEAD
 @require_roles('admin')
-=======
->>>>>>> main
 def remove_event(event_id: int):
     """Delete the specified event."""
     if not delete_event(event_id):
@@ -80,40 +62,27 @@ def remove_event(event_id: int):
 
 
 @app.route('/api/guests', methods=['GET'])
-<<<<<<< HEAD
 @require_roles('admin', 'co-organizer')
-=======
->>>>>>> main
 def list_guests():
     """Return all guests."""
     return jsonify(get_all_guests())
 
 
 @app.route('/api/guests', methods=['POST'])
-<<<<<<< HEAD
 @require_roles('admin', 'co-organizer')
-=======
->>>>>>> main
 def add_guest():
     """Add a guest."""
     data = request.get_json(force=True)
     gid = manage_guest(action='add',
                        name=data.get('name', ''),
                        email=data.get('email', ''),
-<<<<<<< HEAD
                        category=data.get('category', ''),
                        event_id=data.get('event_id'))
-=======
-                       category=data.get('category', ''))
->>>>>>> main
     return jsonify({'id': gid}), 201
 
 
 @app.route('/api/guests/<int:guest_id>', methods=['DELETE'])
-<<<<<<< HEAD
 @require_roles('admin')
-=======
->>>>>>> main
 def delete_guest(guest_id: int):
     """Delete a guest."""
     try:
@@ -124,10 +93,7 @@ def delete_guest(guest_id: int):
 
 
 @app.route('/api/analytics', methods=['GET'])
-<<<<<<< HEAD
 @require_roles('admin', 'co-organizer')
-=======
->>>>>>> main
 def analytics_summary():
     """Simple analytics overview."""
     session = SessionLocal()
@@ -137,7 +103,6 @@ def analytics_summary():
     return jsonify({'events': event_count, 'guests': guest_count})
 
 
-<<<<<<< HEAD
 @app.route('/api/register', methods=['POST'])
 def register():
     data = request.get_json(force=True)
@@ -174,7 +139,5 @@ def logout():
     return jsonify({'message': 'logged out'})
 
 
-=======
->>>>>>> main
 if __name__ == '__main__':
     app.run(debug=True)
