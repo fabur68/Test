@@ -1,6 +1,16 @@
+<<<<<<< HEAD
 """Database models for the event management tool."""
 
 from sqlalchemy import Column, Integer, String, Float, Text, ForeignKey, UniqueConstraint
+=======
+<<<<<<< HEAD
+"""Database models for the event management tool."""
+
+from sqlalchemy import Column, Integer, String, Float, Text, ForeignKey, UniqueConstraint
+=======
+from sqlalchemy import Column, Integer, String, Float, Text
+>>>>>>> main
+>>>>>>> main
 from database import Base
 
 
@@ -21,6 +31,7 @@ class Guest(Base):
     name = Column(String)
     email = Column(String)
     category = Column(String)
+<<<<<<< HEAD
     event_id = Column(Integer, ForeignKey("events.id"))
 
 
@@ -61,6 +72,12 @@ class Feedback(Base):
     comment = Column(Text)
 
 
+=======
+<<<<<<< HEAD
+    event_id = Column(Integer, ForeignKey("events.id"))
+
+
+>>>>>>> main
 class User(Base):
     """Simple user model with roles and password hash."""
     __tablename__ = "users"
@@ -70,3 +87,8 @@ class User(Base):
     role = Column(String, nullable=False)
 
     __table_args__ = (UniqueConstraint("email"),)
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> main
+>>>>>>> main

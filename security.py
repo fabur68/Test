@@ -1,7 +1,17 @@
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> main
 """Security utilities and access control helpers."""
 
 from functools import wraps
 from flask import session, abort
+<<<<<<< HEAD
+=======
+=======
+"""Security utilities."""
+>>>>>>> main
+>>>>>>> main
 
 
 def ensure_gdpr_compliance(data: dict) -> bool:
@@ -13,6 +23,10 @@ def ensure_gdpr_compliance(data: dict) -> bool:
 def enable_two_factor_auth(user_id: int) -> None:
     """Mock enabling of 2FA."""
     print(f"2FA enabled for user {user_id}")
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> main
 
 
 def require_roles(*roles):
@@ -26,3 +40,8 @@ def require_roles(*roles):
             return func(*args, **kwargs)
         return wrapper
     return decorator
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> main
+>>>>>>> main

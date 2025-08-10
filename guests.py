@@ -13,16 +13,36 @@ def _guest_to_dict(guest: Guest) -> Dict:
         "name": guest.name,
         "email": guest.email,
         "category": guest.category,
+<<<<<<< HEAD
         "event_id": guest.event_id,
+=======
+<<<<<<< HEAD
+        "event_id": guest.event_id,
+=======
+>>>>>>> main
+>>>>>>> main
     }
 
 
 def manage_guest(guest_id: int = None, action: str = "add", **data) -> int:
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> main
     """Add, update or delete a guest. Optionally assign to an event."""
     session: Session = SessionLocal()
     if action == "add":
         guest = Guest(name=data.get("name"), email=data.get("email"), category=data.get("category"),
                       event_id=data.get("event_id"))
+<<<<<<< HEAD
+=======
+=======
+    """Add, update or delete a guest."""
+    session: Session = SessionLocal()
+    if action == "add":
+        guest = Guest(name=data.get("name"), email=data.get("email"), category=data.get("category"))
+>>>>>>> main
+>>>>>>> main
         session.add(guest)
         session.commit()
         session.refresh(guest)
@@ -68,6 +88,10 @@ def categorize_guest(guest_id: int, category: str) -> bool:
     return True
 
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> main
 def assign_guest_to_event(guest_id: int, event_id: int) -> bool:
     """Assign an existing guest to an event."""
     session: Session = SessionLocal()
@@ -81,6 +105,11 @@ def assign_guest_to_event(guest_id: int, event_id: int) -> bool:
     return True
 
 
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> main
+>>>>>>> main
 def import_guestlist(csv_file: str) -> int:
     """Import guests from a CSV file. Columns: name,email,category"""
     count = 0
@@ -92,6 +121,10 @@ def import_guestlist(csv_file: str) -> int:
     return count
 
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> main
 def get_all_guests(event_id: int | None = None) -> List[Dict]:
     """Return all guests as a list of dictionaries. Filter by event if provided."""
     session: Session = SessionLocal()
@@ -99,5 +132,14 @@ def get_all_guests(event_id: int | None = None) -> List[Dict]:
     if event_id is not None:
         query = query.filter(Guest.event_id == event_id)
     data = [_guest_to_dict(g) for g in query.all()]
+<<<<<<< HEAD
+=======
+=======
+def get_all_guests() -> List[Dict]:
+    """Return all guests as a list of dictionaries."""
+    session: Session = SessionLocal()
+    data = [_guest_to_dict(g) for g in session.query(Guest).all()]
+>>>>>>> main
+>>>>>>> main
     session.close()
     return data

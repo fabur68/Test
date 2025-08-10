@@ -3,7 +3,15 @@ async function fetchEvents() {
   const data = await res.json();
   const tbody = document.querySelector('#events-table tbody');
   tbody.innerHTML = '';
+<<<<<<< HEAD
   data.forEach(ev => {
+=======
+<<<<<<< HEAD
+  data.forEach(ev => {
+=======
+  Object.entries(data).forEach(([id, ev]) => {
+>>>>>>> main
+>>>>>>> main
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td>${ev.name}</td>
@@ -12,7 +20,15 @@ async function fetchEvents() {
       <td>${ev.location}</td>
       <td>${Number(ev.price).toFixed(2)}</td>
       <td>${(ev.program || []).join(', ')}</td>
+<<<<<<< HEAD
       <td><button data-id="${ev.id}" class="btn btn-delete">Delete</button></td>`;
+=======
+<<<<<<< HEAD
+      <td><button data-id="${ev.id}" class="btn btn-delete">Delete</button></td>`;
+=======
+      <td><button data-id="${id}" class="btn btn-delete">Delete</button></td>`;
+>>>>>>> main
+>>>>>>> main
     tbody.appendChild(tr);
   });
 }

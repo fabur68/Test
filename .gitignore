@@ -1,0 +1,7 @@
+# Virtuelle Umgebung
+venv/
+
+# Python Cache
+__pycache__/
+
+*.db*
