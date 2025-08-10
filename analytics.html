@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Event Manager</title>
+    <title>Analytics - Event Manager</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -11,12 +11,13 @@
         <div class="nav-links">
             <a href="events.html">Events</a>
             <a href="guests.html">Guests</a>
-            <a href="analytics.html">Analytics</a>
+            <a href="analytics.html" class="active">Analytics</a>
         </div>
     </nav>
     <main class="container">
-        <h1>Welcome</h1>
-        <p>Use the navigation above to manage events and guests or to view analytics.</p>
+        <h1>Analytics</h1>
+        <div id="summary" class="card"></div>
     </main>
+    <script src="analytics.js"></script>
 </body>
 </html>
