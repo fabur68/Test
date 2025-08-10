@@ -1,14 +1,11 @@
 from flask import Flask, request, jsonify, send_from_directory, session
 from events import create_event, update_event, delete_event, get_all_events
 from guests import manage_guest, get_all_guests
-<<<<<<< HEAD
 from invitations import send_invitation, record_rsvp
 from seating import create_seating_plan, select_seat, assign_seat_manually
 from payments import process_payment, payment_status
 from analytics import dashboard_overview, generate_report
 from feedback import submit_feedback
-=======
->>>>>>> main
 from database import SessionLocal
 from models import Event, Guest
 from db_setup import init_db
