@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+
+>>>>>>> main
 """Database models for the event management tool."""
 
 from sqlalchemy import Column, Integer, String, Float, Text, ForeignKey, UniqueConstraint
@@ -24,6 +28,7 @@ class Guest(Base):
     event_id = Column(Integer, ForeignKey("events.id"))
 
 
+<<<<<<< HEAD
 class RSVP(Base):
     __tablename__ = "rsvps"
     id = Column(Integer, primary_key=True)
@@ -61,6 +66,8 @@ class Feedback(Base):
     comment = Column(Text)
 
 
+=======
+>>>>>>> main
 class User(Base):
     """Simple user model with roles and password hash."""
     __tablename__ = "users"

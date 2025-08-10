@@ -3,14 +3,40 @@ async function fetchGuests() {
   const data = await res.json();
   const tbody = document.querySelector('#guests-table tbody');
   tbody.innerHTML = '';
+<<<<<<< HEAD
   data.forEach(g => {
+=======
+<<<<<<< HEAD
+  data.forEach(g => {
+=======
+<<<<<<< HEAD
+  data.forEach(g => {
+=======
+  Object.entries(data).forEach(([id, g]) => {
+>>>>>>> main
+>>>>>>> main
+>>>>>>> main
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td>${g.name}</td>
       <td>${g.email}</td>
       <td>${g.category || ''}</td>
+<<<<<<< HEAD
       <td>${g.event_id || ''}</td>
       <td><button data-id="${g.id}" class="btn btn-delete">Delete</button></td>`;
+=======
+<<<<<<< HEAD
+      <td>${g.event_id || ''}</td>
+      <td><button data-id="${g.id}" class="btn btn-delete">Delete</button></td>`;
+=======
+<<<<<<< HEAD
+      <td>${g.event_id || ''}</td>
+      <td><button data-id="${g.id}" class="btn btn-delete">Delete</button></td>`;
+=======
+      <td><button data-id="${id}" class="btn btn-delete">Delete</button></td>`;
+>>>>>>> main
+>>>>>>> main
+>>>>>>> main
     tbody.appendChild(tr);
   });
 }
@@ -20,8 +46,22 @@ document.getElementById('guest-form').addEventListener('submit', async (e) => {
   const payload = {
     name: document.getElementById('g-name').value,
     email: document.getElementById('g-email').value,
+<<<<<<< HEAD
     category: document.getElementById('g-category').value,
     event_id: parseInt(document.getElementById('g-event').value || '0') || null
+=======
+<<<<<<< HEAD
+    category: document.getElementById('g-category').value,
+    event_id: parseInt(document.getElementById('g-event').value || '0') || null
+=======
+<<<<<<< HEAD
+    category: document.getElementById('g-category').value,
+    event_id: parseInt(document.getElementById('g-event').value || '0') || null
+=======
+    category: document.getElementById('g-category').value
+>>>>>>> main
+>>>>>>> main
+>>>>>>> main
   };
   await fetch('/api/guests', {
     method: 'POST',
