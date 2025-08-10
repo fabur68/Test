@@ -1,6 +1,10 @@
+<<<<<<< HEAD
 """Database models for the event management tool."""
 
 from sqlalchemy import Column, Integer, String, Float, Text, ForeignKey, UniqueConstraint
+=======
+from sqlalchemy import Column, Integer, String, Float, Text
+>>>>>>> main
 from database import Base
 
 
@@ -21,6 +25,7 @@ class Guest(Base):
     name = Column(String)
     email = Column(String)
     category = Column(String)
+<<<<<<< HEAD
     event_id = Column(Integer, ForeignKey("events.id"))
 
 
@@ -33,3 +38,5 @@ class User(Base):
     role = Column(String, nullable=False)
 
     __table_args__ = (UniqueConstraint("email"),)
+=======
+>>>>>>> main
