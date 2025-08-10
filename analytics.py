@@ -1,3 +1,4 @@
+
 """Analytics and reporting."""
 
 from sqlalchemy import func
