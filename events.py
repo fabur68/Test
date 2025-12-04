@@ -21,53 +21,50 @@ def _event_to_dict(event: Event) -> Dict:
 def create_event(name: str, date: str, time: str, location: str, price: float,
                  program_points: List[str]) -> int:
     """Create a new event and return its id."""
-    session: Session = SessionLocal()
-    event = Event(name=name, date=date, time=time,
-                  location=location, price=price,
-                  program="|".join(program_points))
-    session.add(event)
-    session.commit()
-    session.refresh(event)
-    event_id = event.id
-    session.close()
-    return event_id
+    program_points = program_points or []
+    with SessionLocal() as session:
+        event = Event(
+            name=name,
+            date=date,
+            time=time,
+            location=location,
+            price=price,
+            program="|".join(program_points),
+        )
+        session.add(event)
+        session.commit()
+        session.refresh(event)
+        return event.id
 
 
 def update_event(event_id: int, **changes) -> Dict | None:
     """Update fields of an existing event. Return updated dict or None."""
-    session: Session = SessionLocal()
-    event = session.get(Event, event_id)
-    if not event:
-        session.close()
-        return None
-    for key, value in changes.items():
-        if hasattr(event, key):
-            if key == "program" and isinstance(value, list):
-                value = "|".join(value)
-            setattr(event, key, value)
-    session.commit()
-    session.refresh(event)
-    data = _event_to_dict(event)
-    session.close()
-    return data
+    with SessionLocal() as session:
+        event = session.get(Event, event_id)
+        if not event:
+            return None
+        for key, value in changes.items():
+            if hasattr(event, key):
+                if key == "program" and isinstance(value, list):
+                    value = "|".join(value)
+                setattr(event, key, value)
+        session.commit()
+        session.refresh(event)
+        return _event_to_dict(event)
 
 
 def delete_event(event_id: int) -> bool:
     """Delete an event by its id."""
-    session: Session = SessionLocal()
-    event = session.get(Event, event_id)
-    if not event:
-        session.close()
-        return False
-    session.delete(event)
-    session.commit()
-    session.close()
-    return True
+    with SessionLocal() as session:
+        event = session.get(Event, event_id)
+        if not event:
+            return False
+        session.delete(event)
+        session.commit()
+        return True
 
 
 def get_all_events() -> List[Dict]:
     """Return all events as a list of dictionaries."""
-    session: Session = SessionLocal()
-    data = [_event_to_dict(e) for e in session.query(Event).all()]
-    session.close()
-    return data
+    with SessionLocal() as session:
+        return [_event_to_dict(e) for e in session.query(Event).all()]

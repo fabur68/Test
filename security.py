@@ -21,6 +21,8 @@ def require_roles(*roles):
         @wraps(func)
         def wrapper(*args, **kwargs):
             user_role = session.get("role")
+            if user_role is None:
+                abort(401)
             if user_role not in roles:
                 abort(403)
             return func(*args, **kwargs)

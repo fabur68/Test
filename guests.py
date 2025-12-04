@@ -19,66 +19,58 @@ def _guest_to_dict(guest: Guest) -> Dict:
 
 def manage_guest(guest_id: int = None, action: str = "add", **data) -> int:
     """Add, update or delete a guest. Optionally assign to an event."""
-    session: Session = SessionLocal()
-    if action == "add":
-        guest = Guest(name=data.get("name"), email=data.get("email"), category=data.get("category"),
-                      event_id=data.get("event_id"))
-        session.add(guest)
-        session.commit()
-        session.refresh(guest)
-        gid = guest.id
-        session.close()
-        return gid
-    elif action == "edit":
-        guest = session.get(Guest, guest_id)
-        if not guest:
-            session.close()
+    with SessionLocal() as session:
+        if action == "add":
+            guest = Guest(
+                name=data.get("name"),
+                email=data.get("email"),
+                category=data.get("category"),
+                event_id=data.get("event_id"),
+            )
+            session.add(guest)
+            session.commit()
+            session.refresh(guest)
+            return guest.id
+        elif action == "edit":
+            guest = session.get(Guest, guest_id)
+            if not guest:
+                raise ValueError("Invalid action or guest_id")
+            for key, value in data.items():
+                if hasattr(guest, key):
+                    setattr(guest, key, value)
+            session.commit()
+            return guest.id
+        elif action == "delete":
+            guest = session.get(Guest, guest_id)
+            if not guest:
+                raise ValueError("Invalid action or guest_id")
+            session.delete(guest)
+            session.commit()
+            return guest_id
+        else:
             raise ValueError("Invalid action or guest_id")
-        for key, value in data.items():
-            if hasattr(guest, key):
-                setattr(guest, key, value)
-        session.commit()
-        gid = guest.id
-        session.close()
-        return gid
-    elif action == "delete":
-        guest = session.get(Guest, guest_id)
-        if not guest:
-            session.close()
-            raise ValueError("Invalid action or guest_id")
-        session.delete(guest)
-        session.commit()
-        session.close()
-        return guest_id
-    else:
-        session.close()
-        raise ValueError("Invalid action or guest_id")
 
 
 def categorize_guest(guest_id: int, category: str) -> bool:
     """Assign a category to a guest."""
-    session: Session = SessionLocal()
-    guest = session.get(Guest, guest_id)
-    if not guest:
-        session.close()
-        return False
-    guest.category = category
-    session.commit()
-    session.close()
-    return True
+    with SessionLocal() as session:
+        guest = session.get(Guest, guest_id)
+        if not guest:
+            return False
+        guest.category = category
+        session.commit()
+        return True
 
 
 def assign_guest_to_event(guest_id: int, event_id: int) -> bool:
     """Assign an existing guest to an event."""
-    session: Session = SessionLocal()
-    guest = session.get(Guest, guest_id)
-    if not guest:
-        session.close()
-        return False
-    guest.event_id = event_id
-    session.commit()
-    session.close()
-    return True
+    with SessionLocal() as session:
+        guest = session.get(Guest, guest_id)
+        if not guest:
+            return False
+        guest.event_id = event_id
+        session.commit()
+        return True
 
 
 def import_guestlist(csv_file: str) -> int:
@@ -94,10 +86,8 @@ def import_guestlist(csv_file: str) -> int:
 
 def get_all_guests(event_id: int | None = None) -> List[Dict]:
     """Return all guests as a list of dictionaries. Filter by event if provided."""
-    session: Session = SessionLocal()
-    query = session.query(Guest)
-    if event_id is not None:
-        query = query.filter(Guest.event_id == event_id)
-    data = [_guest_to_dict(g) for g in query.all()]
-    session.close()
-    return data
+    with SessionLocal() as session:
+        query = session.query(Guest)
+        if event_id is not None:
+            query = query.filter(Guest.event_id == event_id)
+        return [_guest_to_dict(g) for g in query.all()]

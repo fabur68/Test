@@ -7,18 +7,20 @@ from models import Payment
 
 def process_payment(guest_id: int, event_id: int, amount: float, method: str) -> None:
     """Record a payment for a guest."""
-    session: Session = SessionLocal()
-    payment = Payment(guest_id=guest_id, event_id=event_id, amount=amount,
-                      method=method, status="paid")
-    session.add(payment)
-    session.commit()
-    session.close()
+    with SessionLocal() as session:
+        payment = Payment(
+            guest_id=guest_id,
+            event_id=event_id,
+            amount=amount,
+            method=method,
+            status="paid",
+        )
+        session.add(payment)
+        session.commit()
 
 
 def payment_status(guest_id: int, event_id: int) -> str:
     """Return payment status for a guest."""
-    session: Session = SessionLocal()
-    payment = session.query(Payment).filter_by(guest_id=guest_id, event_id=event_id).first()
-    status = payment.status if payment else "unpaid"
-    session.close()
-    return status
+    with SessionLocal() as session:
+        payment = session.query(Payment).filter_by(guest_id=guest_id, event_id=event_id).first()
+        return payment.status if payment else "unpaid"

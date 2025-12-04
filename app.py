@@ -101,10 +101,9 @@ def delete_guest(guest_id: int):
 @require_roles('admin', 'co-organizer')
 def analytics_summary():
     """Simple analytics overview."""
-    session = SessionLocal()
-    event_count = session.query(Event).count()
-    guest_count = session.query(Guest).count()
-    session.close()
+    with SessionLocal() as db:
+        event_count = db.query(Event).count()
+        guest_count = db.query(Guest).count()
     return jsonify({'events': event_count, 'guests': guest_count})
 
 
