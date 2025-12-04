@@ -176,7 +176,10 @@ def api_feedback():
 @app.route('/api/register', methods=['POST'])
 def register():
     data = request.get_json(force=True)
-    uid = create_user(data['email'], data['password'], data.get('role', 'guest'))
+    try:
+        uid = create_user(data['email'], data['password'], data.get('role', 'guest'))
+    except ValueError as exc:
+        return jsonify({'error': str(exc)}), 400
     return jsonify({'id': uid}), 201
 
 
