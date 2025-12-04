@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - Event Manager</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="nav">
+        <a href="index.html" class="nav-brand">Event Manager</a>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="events.html">Events</a>
+            <a href="guests.html">Guests</a>
+            <a href="analytics.html">Analytics</a>
+        </div>
+    </nav>
+    <main class="container">
+        <h1>Login</h1>
+        <form id="login-form" class="card">
+            <div class="form-row">
+                <input type="email" id="email" placeholder="Email" required>
+                <input type="password" id="password" placeholder="Password" required>
+                <input type="text" id="otp" placeholder="OTP (optional)">
+            </div>
+            <button type="submit" class="btn">Login</button>
+        </form>
+        <div id="login-msg"></div>
+    <h2>Register</h2>
+    <form id="register-form" class="card">
+        <div class="form-row">
+            <input type="email" id="reg-email" placeholder="Email" required>
+            <input type="password" id="reg-password" placeholder="Password" required>
+            <select id="reg-role">
+                <option value="guest">Guest</option>
+                <option value="co-organizer">Co-Organisator</option>
+                <option value="admin">Admin</option>
+            </select>
+        </div>
+        <button type="submit" class="btn">Register</button>
+    </form>
+    <div id="register-msg"></div>
+    </main>
+    <script src="login.js"></script>
+</body>
+</html>
